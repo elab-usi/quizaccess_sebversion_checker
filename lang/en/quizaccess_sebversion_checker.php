@@ -25,6 +25,7 @@ $string['max_date_check_desc'] = 'Check version only to that date (Format: YYYY-
  */
 $string['checking_seb_version'] = 'Checking SEB version...';
 $string['not_yet_inseb'] = 'Safe Exam Browser not yet launched';
+$string['start_seb'] = 'Click on Launch Safe Exam Browser.';
 $string['installed_version'] = 'Installed version:';
 $string['prevent_access_error'] = 'You are not authorized to start this quiz. Please update Safe Exam Browser to the latest version or contact the technical support.';
 $string['correct_version'] = 'You have the correct version.';
@@ -42,3 +43,4 @@ $string['timemodified'] = 'Last Update';
 $string['never'] = 'Never';
 $string['filter_noaccess'] = 'Never accessed';
 $string['filter_insession'] = 'In exam session only';
+$string['results'] = 'Results: ';
