@@ -50,6 +50,8 @@ echo html_writer::end_div();
 
 // Configure Table
 $table = new flexible_table('seb_version_report_table');
+$table->define_baseurl($url);
+
 $columns = ['fullname', 'email', 'version', 'has_session', 'timemodified'];
 $headers = [
 //    get_string('userid', 'quizaccess_sebversion_checker'),
@@ -67,8 +69,11 @@ $table->set_attribute('class', 'admintable generaltable');
 $table->setup();
 
 // SQL with Filters.
+$userfieldsapi = \core_user\fields::for_identity($context)->with_userpic();
+$userfields = $userfieldsapi->get_sql('u', false, '', '', false);
+
 $sql = "SELECT s.id, s.userid, s.version, s.has_session, s.timemodified, 
-               u.firstname, u.lastname, u.email
+               u.firstname, u.lastname, u.email, {$userfields->selects}
           FROM {quizaccess_sebversion} s
           JOIN {user} u ON s.userid = u.id";
 
@@ -97,7 +102,7 @@ if ($sort = $table->get_sql_sort()) {
     $sql .= " ORDER BY $sort";
 }
 
-$records = $DB->get_records_sql($sql, $params);
+$records = $DB->get_records_sql($sql, array_merge($params, $userfields->params));
 
 // Populate Data.
 foreach ($records as $record) {

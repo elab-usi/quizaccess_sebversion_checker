@@ -163,6 +163,56 @@ class UserSEBVersion
     }
 
     /**
+     * Sets has_session to 1 for all users provided in the list that already exist in the table.
+     *
+     * @param array $activeUserIds Array of user IDs to activate.
+     * @return bool True on success, false otherwise.
+     */
+    public static function userHasSession(array $activeUserIds): bool {
+        global $DB;
+
+        if (empty($activeUserIds)) {
+            return true;
+        }
+
+        list($insql, $params) = $DB->get_in_or_equal($activeUserIds, SQL_PARAMS_NAMED, 'userid');
+
+        $sql = "UPDATE {" . self::$tablename . "} 
+                SET has_session = 1
+                WHERE userid $insql";
+
+        return $DB->execute($sql, $params);
+    }
+
+    /**
+     * Resets session status to 0 for all users NOT included in the provided list.
+     * * This is useful during cron synchronization to disable sessions for users
+     * who are no longer eligible.
+     *
+     * @param array $activeUserIds Array of user IDs to keep active.
+     * @return bool True on success, false otherwise.
+     */
+    public static function resetUsersSessionsNotInList(array $activeUserIds): bool {
+        global $DB;
+
+        // If the list is empty, we reset everyone since no one is in a session.
+        if (empty($activeUserIds)) {
+            return self::resetAllSessions();
+        }
+
+        // Use the $DB->get_in_or_equal helper to safely handle the array for the SQL query.
+        // We set $equal to false to get the "NOT IN" behavior.
+        list($insql, $params) = $DB->get_in_or_equal($activeUserIds, SQL_PARAMS_NAMED, 'userid', false);
+
+        // Define the field to update.
+        $sql = "UPDATE {" . self::$tablename . "} 
+                SET has_session = 0 
+                WHERE userid $insql";
+
+        return $DB->execute($sql, $params);
+    }
+
+    /**
      * Retrieves all records from the SEB version table joined with user details.
      * * This method joins the custom SEB table with the core Moodle user table
      * to provide a complete dataset including names and email addresses.

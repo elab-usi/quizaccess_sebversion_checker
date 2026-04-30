@@ -62,16 +62,26 @@ class sebchecker_sync_users extends \core\task\scheduled_task {
         ];
 
         $users = $DB->get_records_sql($sql, $params);
+        $activeUserIds = array_keys($users);
 
-        if ($users) {
-            foreach ($users as $user) {
-                if(UserSEBVersion::checkIfUserExist($user->userid))
-                    UserSEBVersion::updateUser($user->userid, null, 1, false);
-                else
-                    UserSEBVersion::addUser($user->userid, null, 1, 0);
+        // Set to 0 has_session for the people not in the list
+        UserSEBVersion::resetUsersSessionsNotInList($activeUserIds);
+
+        // Set to 1 has_session for the people in the list
+        UserSEBVersion::userHasSession($activeUserIds);
+
+        // Add new users
+        $newUsersCount = 0;
+        foreach ($activeUserIds as $userid) {
+            if (!UserSEBVersion::checkIfUserExist($userid)) {
+                if(UserSEBVersion::addUser($userid, null, 1, 0)) {
+                    mtrace("SEB Version Checker: Added successfully user with id " . $userid);
+                    $newUsersCount++;
+                }
             }
         }
 
-        mtrace("SEB Version Checker - Sync complete. Processed " . count($users) . " users.");
+
+        mtrace("SEB Version Checker - Sync complete. Processed " . count($users) . " users, added " . $newUsersCount . " users.");
     }
 }
