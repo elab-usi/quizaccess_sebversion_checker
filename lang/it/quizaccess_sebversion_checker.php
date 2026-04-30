@@ -25,7 +25,7 @@ $string['max_date_check_desc'] = 'Esegui il controllo solo fino a questa data (F
  */
 $string['checking_seb_version'] = 'Verifica versione SEB in corso...';
 $string['not_yet_inseb'] = 'Safe Exam Browser non ancora avviato.';
-$string['start_seb'] = 'Clicca su Avvia Safe Exam Browser.';
+$string['start_seb'] = 'Clicca su Avvia / Start Safe Exam Browser.';
 $string['installed_version'] = 'Versione installata:';
 $string['prevent_access_error'] = 'Non sei autorizzato a cominciare questo quiz. Installa l\'ultima versione di Safe Exam Browser o contatta il supporto tecnico.';
 $string['correct_version'] = 'Hai la versione corretta.';

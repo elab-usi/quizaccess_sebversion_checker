@@ -60,12 +60,12 @@ if ($hassiteconfig) {
             PARAM_TEXT
         ));
 
-        $settings->add(new admin_setting_configcheckbox(
-            'quizaccess_sebversion_checker/enable_email_alerts',
-            get_string('enable_email_alerts', 'quizaccess_sebversion_checker'),
-            get_string('enable_email_alerts_desc', 'quizaccess_sebversion_checker'),
-            0
-        ));
+//        $settings->add(new admin_setting_configcheckbox(
+//            'quizaccess_sebversion_checker/enable_email_alerts',
+//            get_string('enable_email_alerts', 'quizaccess_sebversion_checker'),
+//            get_string('enable_email_alerts_desc', 'quizaccess_sebversion_checker'),
+//            0
+//        ));
 
         $settings->add(new admin_setting_configtext(
             'quizaccess_sebversion_checker/min_date_check',
