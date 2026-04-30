@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 namespace quizaccess_sebversion_checker;
 
 defined('MOODLE_INTERNAL') || die();
