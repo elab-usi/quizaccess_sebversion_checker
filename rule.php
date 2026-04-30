@@ -5,11 +5,11 @@ use quizaccess_sebversion_checker\UserSEBVersion;
 
 defined('MOODLE_INTERNAL') || die();
 
-class quizaccess_sebversion_checker extends quiz_access_rule_base {
+class quizaccess_sebversion_checker extends mod_quiz\local\access_rule_base {
 
     private $checker = null;
 
-    public static function make(quiz $quizobj, $timenow, $canignorerules) {
+    public static function make($quizobj, $timenow, $canignorerules) {
         // For each quiz:
         return new self($quizobj, $timenow, $canignorerules);
     }
