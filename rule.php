@@ -25,7 +25,7 @@ class quizaccess_sebversion_checker extends mod_quiz\local\access_rule_base {
         if ($this->checker->isSeb() && $this->checker->isEnabled()) {
 
             // Save in DB
-            UserSEBVersion::saveUser($USER->id, $this->checker->getCurrentVersion(), time());
+            UserSEBVersion::saveUser($USER->id, $this->checker->getCurrentVersion(), time(), null, $this->checker->getCurrentOS());
 
             // Return popup with version details
             return [$this->checker->getPopup()];

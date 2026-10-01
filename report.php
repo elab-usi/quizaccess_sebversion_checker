@@ -95,8 +95,8 @@ echo html_writer::tag('p', $summary_text, ['class' => 'mt-3 mb-2']);
 $table = new flexible_table('seb_version_report_table');
 $table->define_baseurl($tableurl);
 
-$columns = ['fullname', 'email', 'version', 'has_session', 'timemodified'];
-$headers = [get_string('fullname'), get_string('email'), "Version", "In Session", "Last Update"];
+$columns = ['fullname', 'email', 'version', 'os', 'has_session', 'timemodified'];
+$headers = [get_string('fullname'), get_string('email'), "Version", "OS", "In Session", "Last Update"];
 
 $table->define_columns($columns);
 $table->define_headers($headers);
@@ -111,7 +111,7 @@ $table->pagesize($recordperpage, $total_filtered);
 $userfieldsapi = \core_user\fields::for_identity($context)->with_userpic();
 $userfields = $userfieldsapi->get_sql('u', false, '', '', false);
 
-$sql = "SELECT s.id, s.userid, s.version, s.has_session, s.timemodified, {$userfields->selects}
+$sql = "SELECT s.id, s.userid, s.version, s.os, s.has_session, s.timemodified, {$userfields->selects}
           FROM {quizaccess_sebversion} s
           JOIN {user} u ON s.userid = u.id";
 
@@ -125,6 +125,7 @@ foreach ($records as $record) {
     $row[] = fullname($record);
     $row[] = $record->email;
     $row[] = $record->version ?: '-';
+    $row[] = s($record->os ?: '-');
     $row[] = $record->has_session ? $OUTPUT->pix_icon('i/checked', get_string('yes')) : 'x';
     $row[] = $record->timemodified > 0 ? userdate($record->timemodified) : "Never";
     $table->add_data($row);

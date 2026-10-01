@@ -23,7 +23,7 @@ class UserSEBVersion
      * @param int $hassession Whether the user is in an Exam session (1 or 0).
      * @return int The ID of the new record.
      */
-    public static function addUser(int $userid, string $version = null, int $hassession, int $time = 0){
+    public static function addUser(int $userid, ?string $version = null, int $hassession = 0, int $time = 0, ?string $os = null){
         global $DB;
 
         $record = new stdClass();
@@ -31,6 +31,7 @@ class UserSEBVersion
         $record->version = $version;
         $record->has_session = $hassession;
         $record->timemodified = $time;
+        $record->os = $os;
 
         // Insert
         return $DB->insert_record(self::$tablename, $record);
@@ -64,7 +65,7 @@ class UserSEBVersion
      * @param int|null $hassession SEB session status.
      * @return bool True on success, false on failure.
      */
-    public static function updateUser(int $userid, string $version = null, int $hassession = null, bool $changetime = true): bool {
+    public static function updateUser(int $userid, ?string $version = null, int $hassession = null, bool $changetime = true, ?string $os = null): bool {
         global $DB;
 
         // Retrieve existing record to obtain the primary 'id' key
@@ -74,6 +75,7 @@ class UserSEBVersion
             if($version != null)
                 $record->version = $version;
             $record->has_session = $hassession;
+            $record->os = $os;
             if($changetime)
                 $record->timemodified = time();
 
@@ -92,14 +94,14 @@ class UserSEBVersion
      * @param int $time Time modified. If the user is a new user without checking, default 0 is ok.
      * @return bool|int Success status or new record ID.
      */
-    public static function saveUser(int $userid, ?string $version = null, int $time = 0, ?int $hassession = null): bool {
+    public static function saveUser(int $userid, ?string $version = null, int $time = 0, ?int $hassession = null, ?string $os = null): bool {
 
         $hassession = ($hassession == null) ? self::isUserInExamSession($userid) : $hassession;
 
         if (self::checkIfUserExist($userid)) {
-            return self::updateUser($userid, $version, $hassession);
+            return self::updateUser($userid, $version, $hassession, true, $os);
         } else {
-            return self::addUser($userid, $version, $hassession, $time);
+            return self::addUser($userid, $version, $hassession, $time, $os);
         }
     }
 
@@ -228,6 +230,7 @@ class UserSEBVersion
                        u.lastname, 
                        u.email, 
                        s.version, 
+                       s.os,
                        s.has_session, 
                        s.timemodified
                 FROM {quizaccess_sebversion} s

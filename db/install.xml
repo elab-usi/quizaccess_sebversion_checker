@@ -8,6 +8,7 @@
                 <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp last check"/>
                 <FIELD NAME="has_session" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User has an active session or not"/>
                 <FIELD NAME="version" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="SEB version (last check)"/>
+                <FIELD NAME="os" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Operating System: MacOS or Windows"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

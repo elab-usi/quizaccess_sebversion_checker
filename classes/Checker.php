@@ -44,6 +44,11 @@ class Checker {
         return $this->currentVersion;
     }
 
+    public function getCurrentOS(): string
+    {
+        return $this->os;
+    }
+
     public function __construct(){
         $this->loadHeaders();
     }

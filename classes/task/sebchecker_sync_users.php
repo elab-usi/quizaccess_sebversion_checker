@@ -28,22 +28,20 @@ class sebchecker_sync_users extends \core\task\scheduled_task {
         $max_timestamp = strtotime($max_date);
 
         $maxplusoneday = strtotime('+1 days', $max_timestamp);
+        $maxplustwodays = strtotime('+1 days', $maxplusoneday);
 
 
 
         // If max is minor than today, Checker is not active!
-        if($max_timestamp < time() && $maxplusoneday > time()) {
+        if($maxplusoneday < time() && $maxplustwodays > time()) {
             UserSEBVersion::resetAllSessions(); // all has_session to 0
             mtrace("SEB Version Checker: reset all sessions done.");
             mtrace("SEB Version Checker: dates are in the past. Checker not active!");
             return;
-        } else if ($max_timestamp < time()){
+        } else if ($maxplusoneday < time()){
             mtrace("SEB Version Checker: dates are in the past. Checker not active!");
             return;
         }
-
-        // Check if min is minor that today date
-        $min_timestamp = ($min_timestamp < time()) ? time() : $min_timestamp;
 
 
         // Get all users ID enrolled in courses between the dates.
@@ -61,7 +59,7 @@ class sebchecker_sync_users extends \core\task\scheduled_task {
         $params = [
             'active' => ENROL_USER_ACTIVE,
             'mindate' => $min_timestamp,
-            'maxdate' => $max_timestamp,
+            'maxdate' => $maxplusoneday,
             'contextcourse' => CONTEXT_COURSE,
             'roleid' => 5
         ];

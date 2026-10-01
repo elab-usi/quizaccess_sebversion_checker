@@ -32,6 +32,7 @@ if ($format === 'csv') {
         'Lastname',
         'Email',
         'SEB Version',
+        'OS',
         'In Exam Session',
         'Last Update'
     ]);
@@ -44,6 +45,7 @@ if ($format === 'csv') {
             $row->lastname,
             $row->email,
             $row->version ?: '-',
+            $row->os ?: '-',
             $row->has_session ? 'Yes' : 'No',
             $row->timemodified > 0 ? date('Y-m-d H:i:s', $row->timemodified) : 'Never'
         ]);
