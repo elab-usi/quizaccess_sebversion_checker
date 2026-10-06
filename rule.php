@@ -2,6 +2,7 @@
 
 use quizaccess_sebversion_checker\Checker;
 use quizaccess_sebversion_checker\UserSEBVersion;
+use quizaccess_sebversion_checker\Utils;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,7 +35,9 @@ class quizaccess_sebversion_checker extends mod_quiz\local\access_rule_base {
             // Seb required but not started yet
             $output = html_writer::start_div('alert alert-warning');
             $output .= get_string('not_yet_inseb', 'quizaccess_sebversion_checker');
-            $output .= '<br><h1>' . get_string('start_seb', 'quizaccess_sebversion_checker') . '</h1>';
+            $buttonstring = Utils::isSebServerInstalled() ? 'start_seb_start' : 'start_seb_launch';
+            $buttonlabel = get_string($buttonstring, 'quizaccess_sebversion_checker');
+            $output .= '<br><h1>' . get_string('start_seb', 'quizaccess_sebversion_checker', $buttonlabel) . '</h1>';
             $output .= html_writer::end_div();
         }
 
